@@ -1,0 +1,24 @@
+# 作者
+type Author {
+    #作者Id
+    id: Long!
+    #创建时间
+    createdTime: String @deprecated(reason: "已弃用")
+    #名 长度50 必输
+    firstName: String
+    #姓 长度50 必输
+    lastName: String
+    #该作者的所有书籍
+    books: [Book]
+}
+
+# 作者连接，分页查询使用
+type AuthorConnection{
+    edges: [AuthorEdge]
+    pageInfo: PageInfo
+}
+
+type AuthorEdge{
+    cursor: String
+    node: Author
+}

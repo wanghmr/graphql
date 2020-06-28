@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>测试接口使用</title>
+</head>
+<body>
+<div>
+    <button type="button" onclick="query()">查询</button>
+</div>
+
+</body>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script src="../../static/js/myGraphqlClient.js" th:src="@{/js/myGraphqlClient.js}"></script>
+<script>
+
+    function query() {
+        // 使用片段提取公共字段
+        // 使用内联片段获取子类独有的字段
+        const query =
+            `query {
+                Human: heroForEpisode(episode: JEDI) {
+                    ...comparisonFields
+                    ... on Human {
+                        homePlanet
+                    }
+                }
+                Droid: heroForEpisode(episode: EMPIRE) {
+                    ...comparisonFields
+                    ... on Droid {
+                        primaryFunction
+                    }
+                }
+            }
+            fragment comparisonFields on Character {
+                name
+                appearsIn
+            }`;
+
+        send(query, {}, function (json) {
+            alert(JSON.stringify(json))
+        })
+    }
+</script>
+</html>

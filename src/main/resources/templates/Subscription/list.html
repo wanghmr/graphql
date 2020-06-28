@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>测试接口使用</title>
+</head>
+<body>
+<div>
+    <button type="button" onclick="query()">查询</button>
+</div>
+
+</body>
+<script>
+
+    function query() {
+        // 使用片段提取公共字段
+        // 使用内联片段获取子类独有的字段
+        const query =
+            `subscription {
+                authorAddBook(authorId: 2) {
+                   id
+                   title
+                   pageCount
+                }
+            }`;
+        sendWebSocket(query, {})
+
+    }
+
+
+    function sendWebSocket(query, variables) {
+        if ("WebSocket" in window) {
+            alert("您的浏览器支持 WebSocket!");
+
+            // 打开一个 web socket
+            const ws = new WebSocket("ws://localhost:8081/subscriptions");
+
+            ws.onopen = function () {
+                // Web Socket 已连接上，使用 send() 方法发送数据
+                ws.send(JSON.stringify({
+                    query: query,
+                    variables: variables
+                }));
+                alert("数据发送中...");
+            };
+
+            ws.onmessage = function (evt) {
+                const received_msg = evt.data;
+                alert("数据已接收..." + JSON.stringify(received_msg));
+            };
+
+            ws.onclose = function () {
+                // 关闭 websocket
+                alert("连接已关闭...");
+            };
+        } else {
+            // 浏览器不支持 WebSocket
+            alert("您的浏览器不支持 WebSocket!");
+        }
+    }
+
+</script>
+</html>

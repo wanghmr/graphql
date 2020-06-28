@@ -1,0 +1,31 @@
+# 长度验证命令
+directive @length(min: Int!, max: Int!) on FIELD_DEFINITION
+# 书籍
+type Book {
+    # id
+    id: Long!
+    # 标题
+    title: String! @length(min: 1, max: 100)
+    # 版本
+    isbn: String!
+    # 数量
+    pageCount: Int
+    # 作者
+    author: Author
+}
+
+# 书籍相关操作的输入类型
+input BookInput {
+    title: String!
+    isbn: String!
+    pageCount: Int
+    authorId: Long
+}
+
+# 书籍的分页对象
+type BookPage {
+    # 数据
+    content: [Book]!
+    # 分页信息
+    pageBase: PageBase!
+}

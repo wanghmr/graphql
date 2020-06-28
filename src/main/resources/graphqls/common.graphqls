@@ -1,0 +1,19 @@
+# 自定义分页
+type PageBase {
+    # 当前页数，从0开始
+    pageNumber: Int!
+    # 一页多少条，默认20条
+    pageSize: Int!
+    # 是否有下一页
+    hasNextPage: Boolean!
+    # 总页数
+    totalPages: Int!
+    # 总条数
+    totalElements: Long!
+}
+
+# 自带分页
+type PageInfo{
+    hasPreviousPage:Boolean!
+    hasNextPage:Boolean!
+}

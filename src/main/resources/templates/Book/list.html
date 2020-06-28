@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>书籍管理</title>
+</head>
+<body>
+<div>
+    <button type="button" onclick="find1PageBooks()">查询第一页书籍</button>
+    <br/>
+    <br/>
+    <button type="button" onclick="find2PageBooks()">查询第二页书籍</button>
+    <br/>
+    <br/>
+    <button type="button" onclick="newBook()">新增书籍</button>
+</div>
+
+</body>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script src="../../static/js/myGraphqlClient.js" th:src="@{/js/myGraphqlClient.js}"></script>
+<script>
+
+    function find1PageBooks() {
+        const query =
+            `query {
+                  findBookPage(pageNumber: 0, pageSize: 2) {
+                    pageBase {
+                        pageNumber
+                        pageSize
+                        hasNextPage
+                        totalPages
+                    }
+                    content {
+                        id
+                        title
+                        isbn
+                        pageCount
+                        author{
+                         id
+                         firstName
+                         lastName
+                        }
+                    }
+                  }
+            }`;
+        send(query, {}, function (json) {
+            alert(JSON.stringify(json))
+        })
+    }
+
+    function find2PageBooks() {
+        const query =
+            `query {
+                  findBookPage(pageNumber: 1, pageSize: 2) {
+                    pageBase {
+                        pageNumber
+                        pageSize
+                        hasNextPage
+                        totalPages
+                    }
+                    content {
+                        id
+                        title
+                        isbn
+                        pageCount
+                        author{
+                         id
+                         firstName
+                         lastName
+                        }
+                    }
+                  }
+            }`;
+        send(query, {}, function (json) {
+            alert(JSON.stringify(json))
+        })
+    }
+
+    function newBook() {
+        const query =
+            `mutation{
+                newBook(title: "spring1", isbn: "2222", pageCount: 20, authorId: 2){
+                    id
+                    title
+                    isbn
+                    pageCount
+                    author {
+                        id
+                        firstName
+                        lastName
+                    }
+                }
+            }`;
+        send(query, {}, function (json) {
+            alert(JSON.stringify(json))
+        })
+    }
+
+</script>
+</html>

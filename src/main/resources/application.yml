@@ -1,0 +1,63 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?serverTimezone=UTC
+    username: test
+    password: 111111
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ##validate  加载hibernate时，验证创建数据库表结构
+      ##create   每次加载hibernate，重新创建数据库表结构，这就是导致数据库表数据丢失的原因。
+      ##create-drop        加载hibernate时创建，退出是删除表结构
+      ##update                 加载hibernate自动更新数据库结构
+      ##validate 启动时验证表的结构，不会创建表
+      ##none  启动时不做任何操作
+      ddl-auto: update
+    show-sql: true
+  thymeleaf:
+    cache: false
+logging:
+  level:
+    root: info
+  file:
+    max-size: 400MB
+    name: D:\log\graphql\base.log
+    max-history: 7
+  pattern:
+    rolling-file-name: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.log
+graphql:
+  servlet:
+    # 访问路径，http://ip:port/contextPath/graphql，默认/graphql
+    mapping: /graphql
+    # 为true的时候才会自动配置GraphQLWebAutoConfiguration，否则不会自动配置，默认为true
+    enabled: true
+    # 是否为程序注册CorsFilter，是否允许跨域访问
+    corsEnabled: true
+    # 监听请求是否采取异步模式，默认为false
+    asyncModeEnabled: false
+    # 会在程序中添加MaxQueryDepthInstrumentation拦截器，验证查询的每个字段最大深度，如果超过这个值就报错，深度指字段属于第几层
+    # 这个深度最好设置一下，不然，如果故意写了一个深度很大的语句，攻击服务器
+    # maxQueryDepth: 10
+    # 会在程序中添加MaxQueryComplexityInstrumentation拦截器，如果查询复杂度大于指定的max复杂度，则阻止执行。
+    # maxQueryComplexity: 128
+    # 如果自己定义了异常处理，使用自定义的异常处理程序处理graphql异常，默认是false，自定义异常处理需要实现GraphQLErrorHandler接口
+    exception-handlers-enabled: false
+    # 注册TracingInstrumentation拦截器 响应信息中会添加tracing为key的跟踪信息
+    # tracingEnabled: true
+    # 不开启websocket，不发送订阅
+    websocket:
+      enabled: false
+  tools:
+    # 配置schema文件的位置
+    schema-location-pattern: "**/*.graphqls"
+    # 是否使用默认的objectmapper（json转换的类），默认为true
+    use-default-objectmapper: true
+
+# 嵌入可视化工具
+graphiql:
+  mapping: /graphiql
+  # 是否可以使用graphiql
+  enabled: true
+  pageTitle: GraphiQL

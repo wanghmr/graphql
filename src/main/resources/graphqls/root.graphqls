@@ -1,0 +1,36 @@
+#查询入口
+type Query {
+    ####### Author相关 #########
+    # 根据作者id查询作者
+    findAuthorById(id:Long!): Author
+    # 查询所有的作者
+    findAllAuthors: [Author]!
+    # 使用relay分页查询作者
+    findAuthorPage(first:Int, after:String): AuthorConnection @connection(for: "Author")
+
+    ####### Book相关 #########
+    # 查询所有书籍
+    findAllBooks: [Book]!
+    # 分页查询书籍
+    findBookPage(pageNumber: Int!, pageSize: Int!): BookPage!
+
+    #############character相关#################
+    # 根据episode查询hero
+    heroForEpisode(episode: Episode!): Character
+}
+
+# 修改入口
+type Mutation {
+    # 保存作者
+    newAuthor(firstName: String!,lastName: String!) : Author!
+    # 保存书籍
+    newBook(title: String!,isbn: String!,pageCount: Int, authorId: Long!) : Book!
+    # 保存书籍，传递对象形式
+    saveBook(input: BookInput!) : Book!
+}
+
+#订阅
+#type Subscription {
+#    # 作者添加书籍
+#    authorAddBook(authorId:Long!) : Book!
+#}
